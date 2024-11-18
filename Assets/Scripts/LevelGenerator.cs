@@ -22,13 +22,21 @@ public class LevelGenerator : MonoBehaviour
         columnInstance.transform.position = new Vector3(0f, floorsNumber * floorsGap * (-1f), 0f);
         columnInstance.transform.localScale = new Vector3(1f, floorsNumber * floorsGap, 1f);
 
+        var floorInstance = Instantiate(floorPrefab, levelInstance.transform);
+
+        for(int j = 0; j < segmentsNumber; j++)
+        {
+            Transform segmentInstance = Instantiate(segmentPrefab, floorInstance.transform).transform;
+            Vector3 segmentRotation = new Vector3(0f, segmentsAngle * i, 0f);
+            segmentInstance.transform.Rotate(segmentRotation, Space.World);
+        }
 
         /*
          * СОЗДАЕМ УРОВЕНЬ (КОЛОНА + ЭТАЖ) *
  
         1. Создать уровень                                                                    ==  (YES)
         2. Создать колону (высота и позиция зависят от floorsNumber и floorsGap)              ==  (YES)
-        3. Создать этаж                                                                       ==  (NOO)
+        3. Создать этаж                                                                       ==  (YES)
         4. Сделать чтобы этажи спавнились на расстоянии между друг другом (floorsGap) по Y    ==  (NOO)
         5. Создать сегменты с отступом в segmentsAngle
         6. Повторить пока не создадим нужное количество segmentsNumber
